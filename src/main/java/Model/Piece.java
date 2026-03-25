@@ -3,14 +3,12 @@ package Model;
 public abstract class Piece {
      private PieceName pieceName;
      private Color color;
-     private int row, column,value;
+     private int value;
 
 
-     public Piece(PieceName name, Color color, int row, int column,int value){
+     public Piece(PieceName name, Color color,int value){
          pieceName=name;
          this.color=color;
-         this.row=row;
-         this.column=column;
          this.value=value;
      }
 
@@ -23,13 +21,6 @@ public abstract class Piece {
         return color;
     }
 
-    public int getRow() {
-        return row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
 
     public int getValue() {
         return value;
