@@ -3,6 +3,7 @@ module com.example.scacchi {
     requires javafx.fxml;
 
 
-    opens com.example.scacchi to javafx.fxml;
-    exports com.example.scacchi;
+    opens controller to javafx.fxml;
+    opens chessApplication to javafx.fxml;
+    exports chessApplication;
 }

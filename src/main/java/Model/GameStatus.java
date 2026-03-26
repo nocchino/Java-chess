@@ -1,4 +1,11 @@
 package Model;
 
-public class GameStatus {
+public enum GameStatus {
+    NOT_STARTED,
+    ONGOING,
+    CHECKMATE_WHITE,
+    CHECKMATE_BLACK,
+    STALEMATE,
+    DRAW
+
 }
