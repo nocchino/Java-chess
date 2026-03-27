@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Arrays;
+
 public class Board {
     private Piece[][] board=new Piece[8][8];
 
@@ -74,4 +76,5 @@ public class Board {
             return true;
         }
     }
+
 }

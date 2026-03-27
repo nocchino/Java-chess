@@ -7,4 +7,8 @@ public class Game {
     public Game(){
         gameState=new GameState();
     }
+
+    public GameState getGameState() {
+        return gameState;
+    }
 }
