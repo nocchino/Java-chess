@@ -1,6 +1,8 @@
 package Model;
 
+import javax.swing.*;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
     private Piece[][] board=new Piece[8][8];
@@ -40,7 +42,7 @@ public class Board {
         //Bishop
         board[0][2]=new Bishop(Color.WHITE);
         board[0][5]=new Bishop(Color.WHITE);
-        board[7][2]=new Bishop(Color.WHITE);
+        board[7][2]=new Bishop(Color.BLACK);
         board[7][5]=new Bishop(Color.BLACK);
 
         //Queen and King
@@ -57,6 +59,11 @@ public class Board {
 
         }
 
+
+    }
+
+    public List<Position> getPossibleMove(Piece piece){
+        return null;
 
     }
 

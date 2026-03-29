@@ -1,6 +1,7 @@
 module com.example.scacchi {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens controller to javafx.fxml;
