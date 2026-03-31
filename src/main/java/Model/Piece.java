@@ -9,12 +9,14 @@ public abstract class Piece {
      private Color color;
      private int value;
      private Image image;
+     private int moveCount;
 
 
      public Piece(PieceName name, Color color,int value){
          pieceName=name;
          this.color=color;
          this.value=value;
+         moveCount=0;
      }
 
      //GETTER---------------------------------------------
@@ -39,7 +41,9 @@ public abstract class Piece {
          return (r>=1&&r<=8)&&(c>=1&&c<=8);
     }
 
-    public abstract List<Position> getpossibleMove(Board board,Position from);
+    public int getMoveCount(){
+         return moveCount;
+    }
 
 
 }

@@ -6,12 +6,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="806.0" prefWidth="954.0" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChessController">
+<VBox alignment="CENTER" prefHeight="911.0" prefWidth="1146.0" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChessController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <children>
-      <GridPane fx:id="chessBoard" maxWidth="687.0" minHeight="600.0" prefHeight="861.0" prefWidth="687.0" rotate="-90.0">
+      <GridPane fx:id="chessBoard" maxWidth="858.0" minHeight="600.0" prefHeight="895.0" prefWidth="858.0" rotate="-90.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

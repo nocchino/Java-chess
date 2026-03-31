@@ -2,6 +2,7 @@ package controller;
 
 import Model.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChessController {
@@ -18,6 +20,7 @@ public class ChessController {
     private Pane[][] cells = new Pane[8][8]; //queste sono i 64 pane
     @FXML
     private GridPane chessBoard;//chessboard sotto che non fa nulla il gridpane
+    private List<Position> possibleMoveHighlight;
 
     @FXML
     public void initialize(){
@@ -34,6 +37,7 @@ public class ChessController {
                 chessBoard.add(pane,i,j);
             }
         }
+        possibleMoveHighlight=new ArrayList<>();
     }
 
     public void setGame(Game game){
@@ -45,16 +49,21 @@ public class ChessController {
 
     }
 
-    public void showPossibleMove(){
+
+    public void resetSquareColor(List<Position> currentPossibleMove){
+        for (Position position:currentPossibleMove){
+            if ((position.getRow()+position.getColumn())%2==0){
+                cells[position.getRow()][position.getColumn()].setStyle("-fx-background-color: #F0D9B5;");
+            }else{
+                cells[position.getRow()][position.getColumn()].setStyle("-fx-background-color: #B58863;");
+            }
+        }
 
     }
-    public void showPosition(){
 
-    }
-
-    public void drawPossibleMove(List<List<Integer>> listPossibleMove){
-        for (int i = 0; i < listPossibleMove.size() ; i++) {
-            //cells[listPossibleMove.get(][listPossibleMove].setStyle("-fx-background-color: #00FF00;");
+    public void drawPossibleMove(List<Position> listPossibleMove){
+        for (Position position :listPossibleMove){
+            cells[position.getRow()][position.getColumn()].setStyle("-fx-background-color: #90EE90;");
         }
     }
 
@@ -71,9 +80,13 @@ public class ChessController {
                             Image img = new Image(getClass().getResourceAsStream("/photo/PawnWhite.png"));
                             ImageView imageView = new ImageView(img);
                             imageView.setOnMouseClicked(event -> {
+                                resetSquareColor(possibleMoveHighlight);
+                                possibleMoveHighlight.clear();
                                 System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
                                 // You can add more logic here to show possible moves, etc.
-                                game.getGameState().getBoard().getPossibleMove(pezzo);
+                                possibleMoveHighlight=game.getGameState().getPossibleMovePawn(pezzo,finalI,finalJ);
+                                drawPossibleMove(possibleMoveHighlight);
+
                             });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
@@ -90,6 +103,14 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/RookWhite.png"));
                             ImageView imageView = new ImageView(img);
+                            imageView.setOnMouseClicked(event -> {
+                                resetSquareColor(possibleMoveHighlight);
+                                possibleMoveHighlight.clear();
+                                System.out.println("Clicked on " + pezzo.getPieceName() + " " + pezzo.getColor() + " at " + finalI + "," + finalJ);
+                                // You can add more logic here to show possible moves, etc.
+                                possibleMoveHighlight = game.getGameState().getPossibleMoveRook(pezzo, finalI, finalJ);
+                                drawPossibleMove(possibleMoveHighlight);
+                            });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);
@@ -118,6 +139,14 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/KnightWhite.png"));
                             ImageView imageView = new ImageView(img);
+                            imageView.setOnMouseClicked(event -> {
+                                resetSquareColor(possibleMoveHighlight);
+                                possibleMoveHighlight.clear();
+                                System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
+                                // You can add more logic here to show possible moves, etc.
+                                possibleMoveHighlight=game.getGameState().getPossibleMoveKnight(pezzo,finalI,finalJ);
+                                drawPossibleMove(possibleMoveHighlight);
+                            });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);

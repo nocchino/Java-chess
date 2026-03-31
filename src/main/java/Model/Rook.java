@@ -7,8 +7,5 @@ public class Rook extends Piece{
         super(PieceName.ROOK, color, 5);
     }
 
-    @Override
-    public List<Position> getpossibleMove(Board board, Position from) {
-        return null;
-    }
+
 }

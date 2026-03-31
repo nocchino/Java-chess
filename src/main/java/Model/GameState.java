@@ -1,5 +1,8 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameState {
     private Board board;
     private Color playerTourn;
@@ -15,5 +18,74 @@ public class GameState {
 
     public Board getBoard() {
         return board;
+    }
+
+    public List<Position> getPossibleMovePawn(Piece piece,int i, int j){
+        List<Position> possiblePosition=new ArrayList<>();
+        if (board.getPieceAt(i+1,j)!=null){
+            return possiblePosition;
+        }
+        if (piece.getMoveCount()==0) {
+            possiblePosition.add(new Position(i+2,j));
+            possiblePosition.add(new Position(i+1,j));
+        }if(piece.getMoveCount()!=0){
+            possiblePosition.add(new Position(i+1,j));
+        }if (board.getPieceAt(i+1,j+1)!=null &&(board.getPieceAt(i+1,j+1)).getColor()!=piece.getColor() && board.isInBound(i+1,j+1)){
+            possiblePosition.add(new Position(i+1,j+1));
+        }if (board.getPieceAt(i+1,j-1)!=null && (board.getPieceAt(i+1,j-1)).getColor()!=piece.getColor()&&board.isInBound(i+1,j-1)){
+            possiblePosition.add(new Position(i+1,j-1));
+        }
+
+        return possiblePosition;
+    }
+
+    public List<Position> getPossibleMoveKnight(Piece piece,int i, int j){
+        List<Position> possiblePosition=new ArrayList<>();
+
+        int[][] knightOffsets = {
+                {-2, -1}, {-2, 1},
+                {-1, -2}, {-1, 2},
+                {1, -2}, {1, 2},
+                {2, -1}, {2, 1}
+        };
+
+        for (int[] offset : knightOffsets) {
+            int newRow = i + offset[0];
+            int newCol = j + offset[1];
+
+            if (!board.isInBound(newRow, newCol)) {
+                continue;
+            }
+
+            Piece targetPiece = board.getPieceAt(newRow, newCol);
+            if (targetPiece == null || targetPiece.getColor() != piece.getColor()) {
+                possiblePosition.add(new Position(newRow, newCol));
+            }
+        }
+
+        return possiblePosition;
+    }
+
+    public List<Position> getPossibleMoveRook(Piece piece, int i, int j){
+
+        //non mi piace da fixare
+        List<Position> possiblePosition=new ArrayList<>();
+        int startI=i;
+        int startJ=j;
+        for (int k = 0; k <4 ; k++) {
+            if (k==0){
+                while (board.isInBound(i,j)){
+                    i++;
+                    if (board.isInBound(i+1,j) ){
+                        possiblePosition.add(new Position(i,j));
+                    }
+                }
+            }
+
+            i=startI;
+            j=startJ;
+        }
+
+        return possiblePosition;
     }
 }

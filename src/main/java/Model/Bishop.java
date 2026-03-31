@@ -8,8 +8,5 @@ public class Bishop extends Piece{
         super(PieceName.BISHOP, color, 3);
     }
 
-    @Override
-    public List<Position> getpossibleMove(Board board, Position from) {
-        return null;
-    }
+
 }

@@ -52,6 +52,13 @@ public class Board {
         board[0][4]=new King(Color.WHITE);
         board[7][4]=new King(Color.BLACK);
 
+
+        //test
+        board[2][4]=new Pawn(Color.BLACK);
+        board[3][3]=new Rook(Color.WHITE);
+
+
+
         //Pawn
         for (int i = 0; i < 8; i++) {
             board[1][i]=new Pawn(Color.WHITE);
@@ -62,10 +69,6 @@ public class Board {
 
     }
 
-    public List<Position> getPossibleMove(Piece piece){
-        return null;
-
-    }
 
     public boolean move(int oldRow,int oldColumn, int newRow, int newColumn){
         Piece movingPiece = board[oldRow][oldColumn];

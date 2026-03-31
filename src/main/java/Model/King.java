@@ -7,8 +7,5 @@ public class King extends Piece{
         super(PieceName.KING, color,1000);
     }
 
-    @Override
-    public List<Position> getpossibleMove(Board board, Position from) {
-        return null;
-    }
+
 }
