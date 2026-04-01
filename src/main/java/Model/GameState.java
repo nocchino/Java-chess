@@ -71,87 +71,32 @@ public class GameState {
     }
 
     public List<Position> getPossibleMoveRook(Piece piece, int i, int j){
+        List<Position> possiblePosition = new ArrayList<>();
+        int[][] directions = {
+                {1, 0},
+                {-1, 0},
+                {0, 1},
+                {0, -1}
+        };
 
-        //non mi piace da fixare
-        List<Position> possiblePosition=new ArrayList<>();
-        int startI=i;
-        int startJ=j;
-        //All 4 direction
-        for (int k = 0; k <4 ; k++) {
-            i=startI;
-            j=startJ;
+        for (int[] direction : directions) {
+            int nextRow = i + direction[0];
+            int nextCol = j + direction[1];
 
-            if (k==0){
-                while (board.isInBound(i,j)){
-                    if (board.isInBound(i+1,j) && board.getPieceAt(i+1,j)==null){
-                        i++;
-                        possiblePosition.add(new Position(i,j));
+            while (board.isInBound(nextRow, nextCol)) {
+                Piece targetPiece = board.getPieceAt(nextRow, nextCol);
 
-                    }else if(board.isInBound(i+1,j) && board.getPieceAt(i+1,j)!=null) {
-                        if (board.getPieceAt(i+1,j).getColor()!=piece.getColor()){
-                            i++;
-                            possiblePosition.add(new Position(i,j));
-                            break;
-                        }break;
-                    } else{
-                        break;
+                if (targetPiece == null) {
+                    possiblePosition.add(new Position(nextRow, nextCol));
+                } else {
+                    if (targetPiece.getColor() != piece.getColor()) {
+                        possiblePosition.add(new Position(nextRow, nextCol));
                     }
+                    break;
                 }
-            }
 
-
-            if (k==1){
-                while (board.isInBound(i,j)){
-                    if (board.isInBound(i,j+1) && board.getPieceAt(i,j+1)==null){
-                        j++;
-                        possiblePosition.add(new Position(i,j));
-
-                    }else if(board.isInBound(i,j+1) && board.getPieceAt(i,j+1)!=null) {
-                        if (board.getPieceAt(i,j+1).getColor()!=piece.getColor()){
-                            j++;
-                            possiblePosition.add(new Position(i,j));
-                            break;
-                        }break;
-                    } else{
-                        break;
-                    }
-                }
-            }
-
-            if (k==2){
-                while (board.isInBound(i,j)){
-                    if (board.isInBound(i,j-1) && board.getPieceAt(i,j-1)==null){
-                        j--;
-                        possiblePosition.add(new Position(i,j));
-
-                    }else if(board.isInBound(i,j-1) && board.getPieceAt(i,j-1)!=null) {
-                        if (board.getPieceAt(i,j-1).getColor()!=piece.getColor()){
-                            j--;
-                            possiblePosition.add(new Position(i,j));
-                            break;
-                        }break;
-                    } else{
-                        break;
-                    }
-                }
-            }
-
-            if (k==3){
-                while (board.isInBound(i,j)){
-                    if (board.isInBound(i-1,j) && board.getPieceAt(i-1,j)==null){
-                        i--;
-                        possiblePosition.add(new Position(i,j));
-
-                    }else if(board.isInBound(i-1,j) && board.getPieceAt(i-1,j)!=null) {
-                        if (board.getPieceAt(i-1,j).getColor()!=piece.getColor()){
-                            i--;
-                            possiblePosition.add(new Position(i,j));
-                            break;
-                        }break;
-                    } else{
-                        break;
-                    }
-                }
+                nextRow += direction[0];
+                nextCol += direction[1];
             }
 
         }
