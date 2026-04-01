@@ -161,6 +161,14 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/BishopWhite.png"));
                             ImageView imageView = new ImageView(img);
+                            imageView.setOnMouseClicked(event -> {
+                                resetSquareColor(possibleMoveHighlight);
+                                possibleMoveHighlight.clear();
+                                System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
+                                // You can add more logic here to show possible moves, etc.
+                                possibleMoveHighlight=game.getGameState().getPossibleMoveBishop(pezzo,finalI,finalJ);
+                                drawPossibleMove(possibleMoveHighlight);
+                            });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);

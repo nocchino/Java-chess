@@ -1,5 +1,7 @@
 package Model;
 
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +79,40 @@ public class GameState {
                 {-1, 0},
                 {0, 1},
                 {0, -1}
+        };
+
+        for (int[] direction : directions) {
+            int nextRow = i + direction[0];
+            int nextCol = j + direction[1];
+
+            while (board.isInBound(nextRow, nextCol)) {
+                Piece targetPiece = board.getPieceAt(nextRow, nextCol);
+
+                if (targetPiece == null) {
+                    possiblePosition.add(new Position(nextRow, nextCol));
+                } else {
+                    if (targetPiece.getColor() != piece.getColor()) {
+                        possiblePosition.add(new Position(nextRow, nextCol));
+                    }
+                    break;
+                }
+
+                nextRow += direction[0];
+                nextCol += direction[1];
+            }
+
+        }
+
+        return possiblePosition;
+    }
+
+    public List<Position> getPossibleMoveBishop(Piece piece, int i, int j){
+        List<Position> possiblePosition = new ArrayList<>();
+        int[][] directions = {
+                {1, 1},
+                {1, -1},
+                {-1, -1},
+                {-1, 1}
         };
 
         for (int[] direction : directions) {

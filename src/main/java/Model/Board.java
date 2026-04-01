@@ -55,7 +55,7 @@ public class Board {
 
         //test
         board[2][4]=new Pawn(Color.BLACK);
-        board[3][3]=new Rook(Color.WHITE);
+        board[3][3]=new Bishop(Color.WHITE);
 
 
 
