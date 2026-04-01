@@ -16,13 +16,17 @@ public class GameState {
         moveCount=0;
     }
 
+    public boolean isFree(int row,int col){
+        return board.getPieceAt(row, col) == null;
+    }
+
     public Board getBoard() {
         return board;
     }
 
     public List<Position> getPossibleMovePawn(Piece piece,int i, int j){
         List<Position> possiblePosition=new ArrayList<>();
-        if (board.getPieceAt(i+1,j)!=null){
+        if (!isFree(i+1,j)){
             return possiblePosition;
         }
         if (piece.getMoveCount()==0) {
@@ -72,18 +76,84 @@ public class GameState {
         List<Position> possiblePosition=new ArrayList<>();
         int startI=i;
         int startJ=j;
+        //All 4 direction
         for (int k = 0; k <4 ; k++) {
+            i=startI;
+            j=startJ;
+
             if (k==0){
                 while (board.isInBound(i,j)){
-                    i++;
-                    if (board.isInBound(i+1,j) ){
+                    if (board.isInBound(i+1,j) && board.getPieceAt(i+1,j)==null){
+                        i++;
                         possiblePosition.add(new Position(i,j));
+
+                    }else if(board.isInBound(i+1,j) && board.getPieceAt(i+1,j)!=null) {
+                        if (board.getPieceAt(i+1,j).getColor()!=piece.getColor()){
+                            i++;
+                            possiblePosition.add(new Position(i,j));
+                            break;
+                        }break;
+                    } else{
+                        break;
                     }
                 }
             }
 
-            i=startI;
-            j=startJ;
+
+            if (k==1){
+                while (board.isInBound(i,j)){
+                    if (board.isInBound(i,j+1) && board.getPieceAt(i,j+1)==null){
+                        j++;
+                        possiblePosition.add(new Position(i,j));
+
+                    }else if(board.isInBound(i,j+1) && board.getPieceAt(i,j+1)!=null) {
+                        if (board.getPieceAt(i,j+1).getColor()!=piece.getColor()){
+                            j++;
+                            possiblePosition.add(new Position(i,j));
+                            break;
+                        }break;
+                    } else{
+                        break;
+                    }
+                }
+            }
+
+            if (k==2){
+                while (board.isInBound(i,j)){
+                    if (board.isInBound(i,j-1) && board.getPieceAt(i,j-1)==null){
+                        j--;
+                        possiblePosition.add(new Position(i,j));
+
+                    }else if(board.isInBound(i,j-1) && board.getPieceAt(i,j-1)!=null) {
+                        if (board.getPieceAt(i,j-1).getColor()!=piece.getColor()){
+                            j--;
+                            possiblePosition.add(new Position(i,j));
+                            break;
+                        }break;
+                    } else{
+                        break;
+                    }
+                }
+            }
+
+            if (k==3){
+                while (board.isInBound(i,j)){
+                    if (board.isInBound(i-1,j) && board.getPieceAt(i-1,j)==null){
+                        i--;
+                        possiblePosition.add(new Position(i,j));
+
+                    }else if(board.isInBound(i-1,j) && board.getPieceAt(i-1,j)!=null) {
+                        if (board.getPieceAt(i-1,j).getColor()!=piece.getColor()){
+                            i--;
+                            possiblePosition.add(new Position(i,j));
+                            break;
+                        }break;
+                    } else{
+                        break;
+                    }
+                }
+            }
+
         }
 
         return possiblePosition;
