@@ -139,4 +139,14 @@ public class GameState {
 
         return possiblePosition;
     }
+
+    public List<Position> getPossibleMoveQueen(Piece piece, int i, int j){
+        List<Position> possibleMove=new ArrayList<>();
+
+        getPossibleMoveRook(piece,i,j).stream().forEach(n->possibleMove.add(n));
+        getPossibleMoveBishop(piece,i,j).stream().forEach(n->possibleMove.add(n));
+
+
+        return possibleMove;
+    }
 }

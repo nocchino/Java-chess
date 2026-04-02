@@ -55,7 +55,7 @@ public class Board {
 
         //test
         board[2][4]=new Pawn(Color.BLACK);
-        board[3][3]=new Bishop(Color.WHITE);
+        board[3][3]=new Queen(Color.WHITE);
 
 
 
@@ -63,7 +63,6 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             board[1][i]=new Pawn(Color.WHITE);
             board[6][i]=new Pawn(Color.BLACK);
-
         }
 
 
