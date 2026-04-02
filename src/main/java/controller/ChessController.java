@@ -1,6 +1,7 @@
 package controller;
 
 import Model.*;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -27,11 +28,21 @@ public class ChessController {
         for (int i = 0; i <8 ; i++) {
             for (int j = 0; j <8 ; j++) {
                 Pane pane=new Pane();
+                int finalI=i;
+                int finalJ=j;
                 if ((i+j)%2==0){
                     pane.setStyle("-fx-background-color: #F0D9B5;");
+                    pane.setOnMouseClicked(event -> {
+                        System.out.println("cliccato su cella "+ finalI+finalJ);
+                    });
+
                     cells[i][j]=pane;
+
                 }else{
                     pane.setStyle("-fx-background-color: #B58863;");
+                    pane.setOnMouseClicked(event -> {
+                        System.out.println("cliccato su cella "+ finalI+finalJ);
+                    });
                     cells[i][j]=pane;
                 }
                 chessBoard.add(pane,i,j);
@@ -43,10 +54,6 @@ public class ChessController {
     public void setGame(Game game){
         this.game=game;
         drawPieces();
-
-
-
-
     }
 
 
@@ -63,7 +70,7 @@ public class ChessController {
 
     public void drawPossibleMove(List<Position> listPossibleMove){
         for (Position position :listPossibleMove){
-            cells[position.getRow()][position.getColumn()].setStyle("-fx-background-color: #90EE90;");
+            cells[position.getRow()][position.getColumn()].setStyle("-fx-background-color: #90eed8;");
         }
     }
 
@@ -207,9 +214,5 @@ public class ChessController {
         }
     }
 
-    // Nel controller
-    public void updateBoard() {
-
-    }
 
 }
