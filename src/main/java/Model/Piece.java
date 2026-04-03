@@ -45,5 +45,8 @@ public abstract class Piece {
          return moveCount;
     }
 
+    public void increaseMoveCount(){
+         moveCount++;
+    }
 
 }

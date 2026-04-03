@@ -22,9 +22,21 @@ public class ChessController {
     @FXML
     private GridPane chessBoard;//chessboard sotto che non fa nulla il gridpane
     private List<Position> possibleMoveHighlight;
+    private Piece activePiece;
+    private Position currentPosition;
 
     @FXML
     public void initialize(){
+        drawBoard();
+        possibleMoveHighlight=new ArrayList<>();
+    }
+
+    public void setGame(Game game){
+        this.game=game;
+        drawPieces();
+    }
+
+    public void drawBoard(){
         for (int i = 0; i <8 ; i++) {
             for (int j = 0; j <8 ; j++) {
                 Pane pane=new Pane();
@@ -34,28 +46,60 @@ public class ChessController {
                     pane.setStyle("-fx-background-color: #F0D9B5;");
                     pane.setOnMouseClicked(event -> {
                         System.out.println("cliccato su cella "+ finalI+finalJ);
-                    });
+                        if (activePiece!=null && possibleMoveHighlight.contains(getLandingSquare(finalI,finalJ))){
+                            boolean moved=game.getGameState().getBoard().move(
+                                    currentPosition.getRow(),
+                                    currentPosition.getColumn(),
+                                    finalI,finalJ
+                            );
+                            game.getGameState().setNextTurn();
+                            if (moved){
+                                resetSquareColor(possibleMoveHighlight);
+                                possibleMoveHighlight.clear();
 
+                                activePiece=null;
+                                currentPosition=null;
+
+                                game.getGameState().setNextTurn();
+
+                                drawPieces();
+                            }
+                        }
+                    });
                     cells[i][j]=pane;
+
 
                 }else{
                     pane.setStyle("-fx-background-color: #B58863;");
                     pane.setOnMouseClicked(event -> {
                         System.out.println("cliccato su cella "+ finalI+finalJ);
+                        if (activePiece!=null && possibleMoveHighlight.contains(getLandingSquare(finalI,finalJ))){
+                            boolean moved=game.getGameState().getBoard().move(
+                                    currentPosition.getRow(),
+                                    currentPosition.getColumn(),
+                                    finalI,finalJ
+                            );
+                            game.getGameState().setNextTurn();
+                            if (moved){
+                                resetSquareColor(possibleMoveHighlight);
+                                possibleMoveHighlight.clear();
+
+                                activePiece=null;
+                                currentPosition=null;
+
+                                game.getGameState().setNextTurn();
+
+                                drawPieces();
+                            }
+                        }
                     });
                     cells[i][j]=pane;
+
                 }
                 chessBoard.add(pane,i,j);
             }
         }
-        possibleMoveHighlight=new ArrayList<>();
     }
-
-    public void setGame(Game game){
-        this.game=game;
-        drawPieces();
-    }
-
 
     public void resetSquareColor(List<Position> currentPossibleMove){
         for (Position position:currentPossibleMove){
@@ -67,6 +111,11 @@ public class ChessController {
         }
 
     }
+
+    public Position getLandingSquare(int i, int j){
+        return new Position(i,j);
+    }
+
 
     public void drawPossibleMove(List<Position> listPossibleMove){
         for (Position position :listPossibleMove){
@@ -91,8 +140,11 @@ public class ChessController {
                                 possibleMoveHighlight.clear();
                                 System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
                                 // You can add more logic here to show possible moves, etc.
+                                activePiece=pezzo;
+                                currentPosition=new Position(finalI,finalJ);
                                 possibleMoveHighlight=game.getGameState().getPossibleMovePawn(pezzo,finalI,finalJ);
                                 drawPossibleMove(possibleMoveHighlight);
+
 
                             });
                             imageView.setFitWidth(65);
@@ -117,6 +169,8 @@ public class ChessController {
                                 // You can add more logic here to show possible moves, etc.
                                 possibleMoveHighlight = game.getGameState().getPossibleMoveRook(pezzo, finalI, finalJ);
                                 drawPossibleMove(possibleMoveHighlight);
+                                activePiece=pezzo;
+                                currentPosition=new Position(finalI,finalJ);
                             });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
@@ -153,6 +207,8 @@ public class ChessController {
                                 // You can add more logic here to show possible moves, etc.
                                 possibleMoveHighlight=game.getGameState().getPossibleMoveKnight(pezzo,finalI,finalJ);
                                 drawPossibleMove(possibleMoveHighlight);
+                                activePiece=pezzo;
+                                currentPosition=new Position(finalI,finalJ);
                             });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
@@ -175,6 +231,8 @@ public class ChessController {
                                 // You can add more logic here to show possible moves, etc.
                                 possibleMoveHighlight=game.getGameState().getPossibleMoveBishop(pezzo,finalI,finalJ);
                                 drawPossibleMove(possibleMoveHighlight);
+                                activePiece=pezzo;
+                                currentPosition=new Position(finalI,finalJ);
                             });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
@@ -197,6 +255,8 @@ public class ChessController {
                                 // You can add more logic here to show possible moves, etc.
                                 possibleMoveHighlight=game.getGameState().getPossibleMoveQueen(pezzo,finalI,finalJ);
                                 drawPossibleMove(possibleMoveHighlight);
+                                activePiece=pezzo;
+                                currentPosition=new Position(finalI,finalJ);
                             });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
@@ -213,6 +273,5 @@ public class ChessController {
             }
         }
     }
-
 
 }

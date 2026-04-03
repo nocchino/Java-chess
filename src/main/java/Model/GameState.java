@@ -149,4 +149,17 @@ public class GameState {
 
         return possibleMove;
     }
+
+    public void setNextTurn(){
+        if (playerTourn==Color.WHITE){
+            playerTourn=Color.BLACK;
+        }else {
+            playerTourn=Color.WHITE;
+        }
+    }
+
+
+    public Color getPlayerCount(){
+        return playerTourn;
+    }
 }

@@ -69,21 +69,25 @@ public class Board {
     }
 
 
-    public boolean move(int oldRow,int oldColumn, int newRow, int newColumn){
-        Piece movingPiece = board[oldRow][oldColumn];
-        if (movingPiece.getColor()==board[newRow][newColumn].getColor()) {
-            return false; // Cannot move to a square occupied by a piece of the same color
-        }
+    public boolean move(int oldRow, int oldColumn, int newRow, int newColumn) {
         if (!isInBound(oldRow, oldColumn) || !isInBound(newRow, newColumn)) {
-            return false; // Out of bounds
-        }if (board[oldRow][oldColumn] == null) {
-            return false; // No piece at the old position
-        }else {
-            //Delete old position
-            board[oldRow][oldColumn] = null;
-            setPosition(movingPiece, newRow, newColumn);
-            return true;
+            return false;
         }
+
+        Piece movingPiece = board[oldRow][oldColumn];
+        if (movingPiece == null) {
+            return false;
+        }
+
+        Piece targetPiece = board[newRow][newColumn];
+        if (targetPiece != null && targetPiece.getColor() == movingPiece.getColor()) {
+            return false;
+        }
+
+        board[oldRow][oldColumn] = null;
+        board[newRow][newColumn] = movingPiece;
+        return true;
     }
+
 
 }

@@ -7,5 +7,7 @@ public class Pawn extends Piece{
         super(PieceName.PAWN, color, 1);
     }
 
-
+    public void addMove(){
+        increaseMoveCount();
+    }
 }
