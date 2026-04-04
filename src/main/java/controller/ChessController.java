@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 public class ChessController {
@@ -45,6 +46,7 @@ public class ChessController {
                 if ((i+j)%2==0){
                     pane.setStyle("-fx-background-color: #F0D9B5;");
                     pane.setOnMouseClicked(event -> {
+                        if (game.getGameState().getPlayerTurn()!= Color.WHITE) return;
                         System.out.println("cliccato su cella "+ finalI+finalJ);
                         if (activePiece!=null && possibleMoveHighlight.contains(getLandingSquare(finalI,finalJ))){
                             boolean moved=game.getGameState().getBoard().move(
@@ -52,7 +54,6 @@ public class ChessController {
                                     currentPosition.getColumn(),
                                     finalI,finalJ
                             );
-                            game.getGameState().setNextTurn();
                             if (moved){
                                 resetSquareColor(possibleMoveHighlight);
                                 possibleMoveHighlight.clear();
@@ -72,6 +73,7 @@ public class ChessController {
                 }else{
                     pane.setStyle("-fx-background-color: #B58863;");
                     pane.setOnMouseClicked(event -> {
+                        if (game.getGameState().getPlayerTurn()!= Color.WHITE) return;
                         System.out.println("cliccato su cella "+ finalI+finalJ);
                         if (activePiece!=null && possibleMoveHighlight.contains(getLandingSquare(finalI,finalJ))){
                             boolean moved=game.getGameState().getBoard().move(
@@ -79,7 +81,6 @@ public class ChessController {
                                     currentPosition.getColumn(),
                                     finalI,finalJ
                             );
-                            game.getGameState().setNextTurn();
                             if (moved){
                                 resetSquareColor(possibleMoveHighlight);
                                 possibleMoveHighlight.clear();
@@ -88,7 +89,6 @@ public class ChessController {
                                 currentPosition=null;
 
                                 game.getGameState().setNextTurn();
-
                                 drawPieces();
                             }
                         }
@@ -123,6 +123,22 @@ public class ChessController {
         }
     }
 
+    public void functionForClickOnPiece(ImageView imageView, Piece piece, int row, int col){
+        imageView.setOnMouseClicked(event->{
+            resetSquareColor(possibleMoveHighlight);
+            possibleMoveHighlight.clear();
+            if (game.getGameState().getPlayerTurn() != Color.WHITE) return;
+
+            System.out.println("Clicked on " + piece.getPieceName() +  " "+ piece.getColor()+ " at " + row + "," + col);
+            // You can add more logic here to show possible moves, etc.
+            activePiece=piece;
+            currentPosition=new Position(row,col);
+            possibleMoveHighlight=game.getGameState().getPossibleMovePawn(piece,row,col);
+            drawPossibleMove(possibleMoveHighlight);
+        });
+    }
+
+
     public void drawPieces(){
         for (int i = 0; i <8 ; i++) {
             for (int j = 0; j <8 ; j++) {
@@ -135,18 +151,8 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE){
                             Image img = new Image(getClass().getResourceAsStream("/photo/PawnWhite.png"));
                             ImageView imageView = new ImageView(img);
-                            imageView.setOnMouseClicked(event -> {
-                                resetSquareColor(possibleMoveHighlight);
-                                possibleMoveHighlight.clear();
-                                System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
-                                // You can add more logic here to show possible moves, etc.
-                                activePiece=pezzo;
-                                currentPosition=new Position(finalI,finalJ);
-                                possibleMoveHighlight=game.getGameState().getPossibleMovePawn(pezzo,finalI,finalJ);
-                                drawPossibleMove(possibleMoveHighlight);
+                            functionForClickOnPiece(imageView,pezzo,finalI,finalJ);
 
-
-                            });
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);
@@ -162,16 +168,8 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/RookWhite.png"));
                             ImageView imageView = new ImageView(img);
-                            imageView.setOnMouseClicked(event -> {
-                                resetSquareColor(possibleMoveHighlight);
-                                possibleMoveHighlight.clear();
-                                System.out.println("Clicked on " + pezzo.getPieceName() + " " + pezzo.getColor() + " at " + finalI + "," + finalJ);
-                                // You can add more logic here to show possible moves, etc.
-                                possibleMoveHighlight = game.getGameState().getPossibleMoveRook(pezzo, finalI, finalJ);
-                                drawPossibleMove(possibleMoveHighlight);
-                                activePiece=pezzo;
-                                currentPosition=new Position(finalI,finalJ);
-                            });
+                            functionForClickOnPiece(imageView,pezzo,finalI,finalJ);
+
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);
@@ -200,16 +198,8 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/KnightWhite.png"));
                             ImageView imageView = new ImageView(img);
-                            imageView.setOnMouseClicked(event -> {
-                                resetSquareColor(possibleMoveHighlight);
-                                possibleMoveHighlight.clear();
-                                System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
-                                // You can add more logic here to show possible moves, etc.
-                                possibleMoveHighlight=game.getGameState().getPossibleMoveKnight(pezzo,finalI,finalJ);
-                                drawPossibleMove(possibleMoveHighlight);
-                                activePiece=pezzo;
-                                currentPosition=new Position(finalI,finalJ);
-                            });
+                            functionForClickOnPiece(imageView,pezzo,finalI,finalJ);
+
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);
@@ -224,16 +214,8 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/BishopWhite.png"));
                             ImageView imageView = new ImageView(img);
-                            imageView.setOnMouseClicked(event -> {
-                                resetSquareColor(possibleMoveHighlight);
-                                possibleMoveHighlight.clear();
-                                System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
-                                // You can add more logic here to show possible moves, etc.
-                                possibleMoveHighlight=game.getGameState().getPossibleMoveBishop(pezzo,finalI,finalJ);
-                                drawPossibleMove(possibleMoveHighlight);
-                                activePiece=pezzo;
-                                currentPosition=new Position(finalI,finalJ);
-                            });
+                            functionForClickOnPiece(imageView,pezzo,finalI,finalJ);
+
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);
@@ -248,16 +230,8 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/QueenWhite.png"));
                             ImageView imageView = new ImageView(img);
-                            imageView.setOnMouseClicked(event -> {
-                                resetSquareColor(possibleMoveHighlight);
-                                possibleMoveHighlight.clear();
-                                System.out.println("Clicked on " + pezzo.getPieceName() +  " "+ pezzo.getColor()+ " at " + finalI + "," + finalJ);
-                                // You can add more logic here to show possible moves, etc.
-                                possibleMoveHighlight=game.getGameState().getPossibleMoveQueen(pezzo,finalI,finalJ);
-                                drawPossibleMove(possibleMoveHighlight);
-                                activePiece=pezzo;
-                                currentPosition=new Position(finalI,finalJ);
-                            });
+                            functionForClickOnPiece(imageView,pezzo,finalI,finalJ);
+
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);

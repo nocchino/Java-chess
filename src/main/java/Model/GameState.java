@@ -159,7 +159,7 @@ public class GameState {
     }
 
 
-    public Color getPlayerCount(){
+    public Color getPlayerTurn(){
         return playerTourn;
     }
 }
