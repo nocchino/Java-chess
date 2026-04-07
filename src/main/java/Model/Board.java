@@ -6,9 +6,10 @@ import java.util.List;
 
 public class Board {
     private Piece[][] board=new Piece[8][8];
-
-    public Board(){
+    private GameState gameState;
+    public Board(GameState gameState){
         setInitialPosition();
+        this.gameState=gameState;
     }
 
     public Piece getPieceAt(int r,int c){
@@ -89,5 +90,72 @@ public class Board {
         return true;
     }
 
+    private String countFreeCells(int riga,int colonna){
+        int res=0;
+        while (isInBound(riga,colonna)){
+            if (board[riga][colonna]==null){
+                res+=1;
+                colonna++;
+            }else{
+                break;
+            }
+        }
+        return String.valueOf(res);
+    }
 
+
+    //WHITE CAPITAL
+    //black lowercase
+    //hardcoded arrocco!!
+    //TODO da finire
+    public String transformIntoFen(){
+        StringBuilder sb=new StringBuilder();
+        int colonna;
+        int riga=7;
+        while(riga>=0){
+            colonna=0;
+            while (colonna<=7){
+                Piece piece=getPieceAt(riga,colonna);
+                if (piece==null){
+                    String res=countFreeCells(riga,colonna);
+                    sb.append(res);
+                    colonna+=Integer.parseInt(res)-1;
+                }else{
+                    switch (piece.getPieceName()) {
+                        case KING:
+                            sb.append(piece.getColor() == Color.WHITE ? "K" : "k");
+                            break;
+                        case QUEEN:
+                            sb.append(piece.getColor() == Color.WHITE ? "Q" : "q");
+                            break;
+                        case ROOK:
+                            sb.append(piece.getColor() == Color.WHITE ? "R" : "r");
+                            break;
+                        case BISHOP:
+                            sb.append(piece.getColor() == Color.WHITE ? "B" : "b");
+                            break;
+                        case KNIGHT:
+                            sb.append(piece.getColor() == Color.WHITE ? "N" : "n");
+                            break;
+                        case PAWN:
+                            sb.append(piece.getColor() == Color.WHITE ? "P" : "p");
+                            break;
+
+                    }
+                }
+
+                colonna++;
+            }
+            sb.append("/");
+            riga--;
+        }
+        String stringaDaTornare=sb.substring(0,sb.length()-1);
+        if (gameState.getPlayerTurn()==Color.WHITE){
+            stringaDaTornare+=" w ";
+        }else{
+            stringaDaTornare+=" b ";
+        }
+        stringaDaTornare+= "KQkq - 0 "+ gameState.getMoveCount();
+        return stringaDaTornare;
+    }
 }

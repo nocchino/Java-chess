@@ -10,12 +10,15 @@ public class GameState {
     private Color playerTourn;
     private GameStatus status=GameStatus.NOT_STARTED;
     private int moveCount;
+    private int pattaCount;
 
     public GameState(){
-        board=new Board();
+        board=new Board(this);
         playerTourn=Color.WHITE;
         status=GameStatus.ONGOING;
-        moveCount=0;
+        moveCount=1;
+        pattaCount=0;
+        board.transformIntoFen();
     }
 
     public boolean isFree(int row,int col){
@@ -26,6 +29,7 @@ public class GameState {
         return board;
     }
 
+    //TODO migliorare questo
     public List<Position> getPossibleMovePawn(Piece piece,int i, int j){
         List<Position> possiblePosition=new ArrayList<>();
         if (!isFree(i+1,j)){
@@ -161,5 +165,9 @@ public class GameState {
 
     public Color getPlayerTurn(){
         return playerTourn;
+    }
+
+    public int getMoveCount() {
+        return moveCount;
     }
 }
