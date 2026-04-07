@@ -54,11 +54,6 @@ public class Board {
         board[7][4]=new King(Color.BLACK);
 
 
-        //test
-        board[2][4]=new Pawn(Color.BLACK);
-        board[3][3]=new Queen(Color.WHITE);
-
-
 
         //Pawn
         for (int i = 0; i < 8; i++) {

@@ -12,9 +12,16 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class ChessController {
     private Game game;
@@ -53,7 +60,9 @@ public class ChessController {
                                     currentPosition.getRow(),
                                     currentPosition.getColumn(),
                                     finalI,finalJ
+
                             );
+                            System.out.println(game.getGameState().getBoard().transformIntoFen());
                             if (moved){
                                 resetSquareColor(possibleMoveHighlight);
                                 possibleMoveHighlight.clear();
@@ -64,6 +73,7 @@ public class ChessController {
                                 game.getGameState().setNextTurn();
 
                                 drawPieces();
+                                askEngineMove(game.getGameState().getBoard().transformIntoFen());
                             }
                         }
                     });
@@ -81,6 +91,7 @@ public class ChessController {
                                     currentPosition.getColumn(),
                                     finalI,finalJ
                             );
+
                             if (moved){
                                 resetSquareColor(possibleMoveHighlight);
                                 possibleMoveHighlight.clear();
@@ -90,6 +101,7 @@ public class ChessController {
 
                                 game.getGameState().setNextTurn();
                                 drawPieces();
+                                System.out.println(game.getGameState().getBoard().transformIntoFen());
                             }
                         }
                     });
@@ -130,10 +142,14 @@ public class ChessController {
             if (game.getGameState().getPlayerTurn() != Color.WHITE) return;
 
             System.out.println("Clicked on " + piece.getPieceName() +  " "+ piece.getColor()+ " at " + row + "," + col);
-            // You can add more logic here to show possible moves, etc.
+
             activePiece=piece;
             currentPosition=new Position(row,col);
-            possibleMoveHighlight=game.getGameState().getPossibleMovePawn(piece,row,col);
+            if (piece.getPieceName()==PieceName.PAWN) possibleMoveHighlight=game.getGameState().getPossibleMovePawn(piece,row,col);
+            if (piece.getPieceName()==PieceName.ROOK) possibleMoveHighlight=game.getGameState().getPossibleMoveRook(piece,row,col);
+            if (piece.getPieceName()==PieceName.KNIGHT) possibleMoveHighlight=game.getGameState().getPossibleMoveKnight(piece,row,col);
+            if (piece.getPieceName()==PieceName.BISHOP) possibleMoveHighlight=game.getGameState().getPossibleMoveBishop(piece,row,col);
+            if (piece.getPieceName()==PieceName.QUEEN) possibleMoveHighlight=game.getGameState().getPossibleMoveQueen(piece,row,col);
             drawPossibleMove(possibleMoveHighlight);
         });
     }
@@ -184,6 +200,7 @@ public class ChessController {
                         if (pezzo.getColor() == Color.WHITE) {
                             Image img = new Image(getClass().getResourceAsStream("/photo/KingWhite.png"));
                             ImageView imageView = new ImageView(img);
+                            functionForClickOnPiece(imageView,pezzo,finalI,finalJ);
                             imageView.setFitWidth(65);
                             imageView.setFitHeight(65);
                             cells[i][j].getChildren().add(imageView);
@@ -246,6 +263,17 @@ public class ChessController {
                 }
             }
         }
+    }
+
+
+    public String askEngineMove(String stringFEN){
+        String encodedFEN= URLEncoder.encode(game.getGameState().getBoard().transformIntoFen(), StandardCharsets.UTF_8);
+        String URL="https://stockfish.online/api/s/v2.php?fen="+encodedFEN+"&depth=10";
+        HttpClient httpClient=HttpClient.newHttpClient();
+        HttpRequest request=HttpRequest.newBuilder().uri(URI.create(URL)).build();
+        System.out.println(URL);
+
+        return null;
     }
 
 }
