@@ -82,8 +82,11 @@ public class Board {
 
         board[oldRow][oldColumn] = null;
         board[newRow][newColumn] = movingPiece;
+        movingPiece.increaseMoveCount();
         return true;
     }
+
+
 
     private String countFreeCells(int riga,int colonna){
         int res=0;

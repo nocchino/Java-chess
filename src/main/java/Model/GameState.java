@@ -29,7 +29,7 @@ public class GameState {
         return board;
     }
 
-    //TODO migliorare questo
+    //TODO migliorare questo. non considera che può mangiare i pezzi ai lati se ne ha uno davanti
     public List<Position> getPossibleMovePawn(Piece piece,int i, int j){
         List<Position> possiblePosition=new ArrayList<>();
         if (!isFree(i+1,j)){

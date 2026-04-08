@@ -1,6 +1,7 @@
 package controller;
 
 import Model.*;
+import com.google.gson.Gson;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -73,7 +75,13 @@ public class ChessController {
                                 game.getGameState().setNextTurn();
 
                                 drawPieces();
-                                askEngineMove(game.getGameState().getBoard().transformIntoFen());
+                                try {
+                                    askEngineMove(game.getGameState().getBoard().transformIntoFen());
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
                     });
@@ -101,7 +109,13 @@ public class ChessController {
 
                                 game.getGameState().setNextTurn();
                                 drawPieces();
-                                System.out.println(game.getGameState().getBoard().transformIntoFen());
+                                try {
+                                    askEngineMove(game.getGameState().getBoard().transformIntoFen());
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
                     });
@@ -152,6 +166,22 @@ public class ChessController {
             if (piece.getPieceName()==PieceName.QUEEN) possibleMoveHighlight=game.getGameState().getPossibleMoveQueen(piece,row,col);
             drawPossibleMove(possibleMoveHighlight);
         });
+    }
+
+    // -97, c7c5
+    public void transformResponse(String risposta){
+        int startCol=risposta.charAt(0)-97;
+        int startRow=Integer.parseInt(String.valueOf(risposta.charAt(1)));
+        startRow--;
+        int endCol=risposta.charAt(2)-97;
+        int endRow=Integer.parseInt(String.valueOf(risposta.charAt(3)));
+        endRow--;
+
+        game.getGameState().getBoard().move(startRow,startCol,endRow,endCol);
+        game.getGameState().setNextTurn();
+        drawPieces();
+
+
     }
 
 
@@ -266,14 +296,18 @@ public class ChessController {
     }
 
 
-    public String askEngineMove(String stringFEN){
+    public void askEngineMove(String stringFEN) throws IOException, InterruptedException {
+        Gson gson=new Gson();
         String encodedFEN= URLEncoder.encode(game.getGameState().getBoard().transformIntoFen(), StandardCharsets.UTF_8);
         String URL="https://stockfish.online/api/s/v2.php?fen="+encodedFEN+"&depth=10";
         HttpClient httpClient=HttpClient.newHttpClient();
         HttpRequest request=HttpRequest.newBuilder().uri(URI.create(URL)).build();
-        System.out.println(URL);
+        HttpResponse<String> response=httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        String jsonString = response.body();
+        Response rispostaClass=gson.fromJson(jsonString,Response.class);
+        String best=rispostaClass.bestmove.split(" ")[1];
+        transformResponse(best);
 
-        return null;
     }
 
 }
