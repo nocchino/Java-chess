@@ -76,7 +76,7 @@ public class ChessController {
 
                                 drawPieces();
                                 try {
-                                    askEngineMove(game.getGameState().getBoard().transformIntoFen());
+                                    askEngineMove();
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 } catch (InterruptedException e) {
@@ -110,7 +110,7 @@ public class ChessController {
                                 game.getGameState().setNextTurn();
                                 drawPieces();
                                 try {
-                                    askEngineMove(game.getGameState().getBoard().transformIntoFen());
+                                    askEngineMove();
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 } catch (InterruptedException e) {
@@ -296,7 +296,7 @@ public class ChessController {
     }
 
 
-    public void askEngineMove(String stringFEN) throws IOException, InterruptedException {
+    public void askEngineMove() throws IOException, InterruptedException {
         Gson gson=new Gson();
         String encodedFEN= URLEncoder.encode(game.getGameState().getBoard().transformIntoFen(), StandardCharsets.UTF_8);
         String URL="https://stockfish.online/api/s/v2.php?fen="+encodedFEN+"&depth=10";
