@@ -5,3 +5,7 @@ i'm using the stockfish API to get the best move for the opponent.
 
 ![Chess App Screenshot](src/main/resources/screenshots/chessBoard2.png)
 
+Implemetation to be done:
+- castling
+- en passant
+- promotion
