@@ -84,6 +84,8 @@ public class Board {
         board[newRow][newColumn] = movingPiece;
         movingPiece.increaseMoveCount();
         return true;
+
+
     }
 
 
