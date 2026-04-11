@@ -24,4 +24,8 @@ public class ChessApplication extends Application {
         ChessController controller=fxmlLoader.getController();
         controller.setGame(game);
     }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
